@@ -39,8 +39,11 @@ namespace cs540{
 					static_assert(Dim, "Container cannot have dimension with size 0");	
 				};
 
-				Array(const Array& A) : container(A.container){
+				Array(const Array& A) {
 					static_assert(Dim, "Container cannot have dimension with size 0");	
+					for(int i = 0; i < Dim; i++){
+						container[i] = A.container[i];
+					}
 				};
 
 				template<typename U>
@@ -130,7 +133,7 @@ namespace cs540{
 							return *this;	
 						};
 
-						FirstDimensionMajorIterator& operator++(int){
+						FirstDimensionMajorIterator operator++(int){
 							auto temp = *this;
 							indexer.fdm_inc();
 							return temp;	
@@ -163,7 +166,7 @@ namespace cs540{
 							return *this;
 						};
 
-						LastDimensionMajorIterator& operator++(int){
+						LastDimensionMajorIterator operator++(int){
 							auto temp = *this;
 							indexer.ldm_inc();
 							return temp;
@@ -218,8 +221,11 @@ namespace cs540{
 					static_assert(calcProduct(Dims...), "Container cannot have dimension with size 0");	
 				};
 
-				Array(const Array& A) : container(A.container) {
+				Array(const Array& A){
 					static_assert(calcProduct(Dims...), "Container cannot have dimension with size 0");		
+					for(int i = 0; i < Dim; i++){
+						container[i] = A.container[i];
+					}
 				};
 
 				template<typename U>
@@ -313,21 +319,22 @@ namespace cs540{
 
 						FirstDimensionMajorIterator();
 
-						FirstDimensionMajorIterator(Indexer<Dim, Dims...> i, Array<T, Dim, Dims...> *p) : indexer(i), parent(p) {};
+						FirstDimensionMajorIterator(Array<T, Dim, Dims...>::Indexer<Dim, Dims...> i, Array<T, Dim, Dims...> *p) : indexer(i), parent(p) {};
 
 						FirstDimensionMajorIterator& operator++(){
 							indexer.fdm_inc();
 							return *this;	
 						};
 
-						FirstDimensionMajorIterator& operator++(int){
+						FirstDimensionMajorIterator operator++(int){
 							auto temp = *this;
 							indexer.fdm_inc();
 							return temp;	
 						};
 
 						T& operator*() const{
-							FirstDimensionMajorIterator temp(indexer.m_nested, parent->container[indexer.m_index]);
+							Array<T, Dims...> *p = &parent->container[indexer.m_index];
+							typename Array<T, Dims...>::FirstDimensionMajorIterator temp(indexer.m_nested, p);
 							return *temp;
 						};
 
@@ -347,21 +354,22 @@ namespace cs540{
 
 						LastDimensionMajorIterator();
 
-						LastDimensionMajorIterator(Indexer<Dim, Dims...> i, Array<T, Dims...> *p) : indexer(i), parent(p) {};
+						LastDimensionMajorIterator(Array<T, Dim, Dims...>::Indexer<Dim, Dims...> i, Array<T, Dim, Dims...> *p) : indexer(i), parent(p) {};
 
 						LastDimensionMajorIterator& operator++(){
 							indexer.ldm_inc();
 							return *this;
 						};
 
-						LastDimensionMajorIterator& operator++(int){
+						LastDimensionMajorIterator operator++(int){
 							auto temp = *this;
 							indexer.ldm_inc();
 							return temp;
 						};
 
 						T& operator*() const{
-							LastDimensionMajorIterator temp(indexer.m_nested, parent->container[indexer.m_index]);
+							Array<T, Dims...> *p = &parent->container[indexer.m_index];
+							typename Array<T, Dims...>::LastDimensionMajorIterator temp(indexer.m_nested, p);
 							return *temp;
 						};
 
