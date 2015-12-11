@@ -61,7 +61,7 @@ int main() {
      */
 
     {
-        using array_t = Array<int, 3>;
+        using array_t  = Array<int, 3>;
         array_t a1;
         int a[] = {2, 11, 7};
 

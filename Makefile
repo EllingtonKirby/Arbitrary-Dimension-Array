@@ -1,9 +1,9 @@
 P = array
-F = -g -Wall -std=c++0x
-C = g++
+F = -g -Wall -std=c++0x -Wfatal-errors
+C = clang++
 
 all: 
-	$C $F -o $P test_array.cpp
+	$C $F -o $P test_Array.cpp
 
 self-test: 
 	$C $F -o $P self_test.cpp
